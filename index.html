@@ -1,226 +1,1800 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#000000">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
-<meta name="color-scheme" content="light">
-<title>LanMesh | Private chat and calling without internet</title>
-<meta name="description" content="LanMesh is a peer to peer messenger for your local network. Chat, call and share files with people nearby, no internet and no servers.">
-<script>document.documentElement.classList.add('js')</script>
-<style>
-:root{--b:#0379fb;--k:#000;--w:#fff;--ease:cubic-bezier(.23,1,.32,1);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-*{box-sizing:border-box}
-html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
-body{margin:0;background:var(--k);color:var(--k);font:400 1rem/1.5 system-ui,-apple-system,"SF Pro Text","Segoe UI",Roboto,sans-serif;letter-spacing:0;-webkit-font-smoothing:antialiased}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--k)}
-a{color:inherit;text-decoration:none}
-button,a,[role=button]{touch-action:manipulation}
-button,.btn,.logo,.links a{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
-.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(0,0,0,.72);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);color:var(--w)}
-.nav{display:flex;align-items:center;gap:24px;height:72px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.4rem;letter-spacing:-.02em}
-.logo i{width:34px;height:34px;border-radius:10px;background:var(--b);display:grid;place-items:center}
-.logo svg{width:20px;height:20px}
-.links{display:flex;gap:4px;margin-left:12px;flex:1}
-.links a,.dd>button{font:600 .95rem system-ui,-apple-system,sans-serif;letter-spacing:.01em;color:var(--w);background:none;border:0;padding:10px 14px;border-radius:10px;cursor:pointer;transition:background-color 120ms ease,transform 120ms var(--ease)}
-.links a:active,.dd>button:active{transform:scale(.97);background:var(--b)}
-.dd{position:relative}
-.menu{position:absolute;top:100%;left:0;min-width:210px;background:var(--k);border:2px solid var(--b);border-radius:16px;padding:8px;opacity:0;visibility:hidden;transform:scale(.97);transform-origin:top left;transition:opacity 150ms var(--ease),transform 150ms var(--ease),visibility 0s 150ms}
-.dd:focus-within .menu{opacity:1;visibility:visible;transform:none;transition-delay:0s}
-.menu a{display:block}
-.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--b);color:var(--w);font-weight:700;font-size:1.05rem;padding:15px 30px;border-radius:999px;border:0;transition:transform 160ms var(--ease),background-color 160ms ease}
-.btn:active{transform:scale(.97)}
-.btn.sm{padding:10px 22px;font-size:.95rem}
-.btn.inv{background:var(--w);color:var(--b)}
-.burger{display:none;margin-left:auto;background:none;border:0;color:var(--w);font-size:1.7rem;padding:8px 12px;transition:transform 120ms var(--ease)}
-.burger:active{transform:scale(.94)}
-.blue{background:var(--b);color:var(--w)}.black{background:var(--k);color:var(--w)}.white{background:var(--w);color:var(--k)}
-h1{font-size:clamp(2.7rem,6.2vw,4.8rem);line-height:1.02;letter-spacing:-.04em;margin:0 0 20px;font-weight:800}
-h2{font-size:clamp(2rem,4.4vw,3.4rem);line-height:1.08;letter-spacing:-.03em;margin:0 0 18px;font-weight:800}
-.white h2 em,.white .more{color:var(--b)}
-.black h2 em{color:var(--b)}
-em{font-style:normal}.blue em{color:var(--k)}
-.lead{font-size:clamp(1.2rem,2vw,1.4rem);line-height:1.45;font-weight:600;max-width:520px;margin:0 0 30px;letter-spacing:0}
-.fine{font-size:.9rem;font-weight:600;letter-spacing:.01em;margin-top:18px}
-.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding-top:64px;padding-bottom:0;min-height:min(100svh,780px);overflow:hidden}
-.hero{overflow:hidden;background-image:linear-gradient(90deg,rgba(3,121,251,.88),rgba(3,121,251,.48)),url("image_bg.png");background-size:cover;background-position:center}
-.stage{position:relative;display:flex;justify-content:center;align-items:flex-end;align-self:end;height:540px}
-.phone{width:min(300px,68vw);filter:drop-shadow(0 30px 40px rgba(0,0,0,.35));transform:translateY(40px)}
-.phone.b2{position:absolute;left:0;bottom:-70px;width:min(220px,42vw);transform:rotate(-6deg)}
-.bub{position:absolute;background:var(--w);color:var(--k);border-radius:18px;padding:12px 18px;font-weight:700;transition:opacity 400ms var(--ease) 700ms,transform 400ms var(--ease) 700ms}
-.bub.one{right:0;top:18%}.bub.two{left:-2%;top:36%;background:var(--k);color:var(--w);transition-delay:900ms}
-@starting-style{.bub{opacity:0;transform:scale(.95) translateY(8px)}}
-.big{padding:110px 0;text-align:center}
-.big p{font-size:clamp(1.5rem,3.4vw,2.6rem);line-height:1.22;letter-spacing:-.025em;font-weight:700;max-width:960px;margin:0 auto}
-.big p span{color:var(--b)}
-.feat{padding:100px 0}
-.feat .wrap{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
-.feat.rev .txt{order:2}
-.feat .txt p{font-size:1.2rem;font-weight:500;line-height:1.5;max-width:480px;margin:0}
-.more{display:inline-block;margin-top:18px;font-weight:700;font-size:1.2rem;transition:transform 120ms var(--ease)}
-.more:active{transform:scale(.97)}
-.more::after{content:" \2192"}
-.shots{display:flex;justify-content:center;gap:22px}
-.shots img{display:block;width:min(250px,42vw);max-width:100%;height:auto}
-.shots img:nth-child(2){margin-top:60px}
-.shots.one img{width:min(310px,100%)}
-.shots.one img.image3{width:min(250px,100%)}
-.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
-.chips span{border:2px solid currentColor;border-radius:999px;padding:7px 16px;font-weight:700;font-size:.95rem;letter-spacing:.01em}
-.stats,.how{display:grid;gap:18px;margin-top:52px}
-.stats{grid-template-columns:repeat(4,1fr)}.how{grid-template-columns:repeat(3,1fr)}
-.stat,.how>div{border:2px solid var(--b);border-radius:24px;padding:28px}
-.stat b{display:block;font-size:3rem;letter-spacing:-.04em;color:var(--b);line-height:1}
-.stat span{font-weight:700}
-.how h3{margin:0 0 8px;font-size:1.4rem;letter-spacing:-.015em}.how p{margin:0;font-weight:500}
-.n{width:40px;height:40px;border-radius:50%;background:var(--b);color:var(--w);display:grid;place-items:center;font-weight:800;margin-bottom:16px}
-.mesh{display:block;margin:0 auto;max-width:620px;width:100%}
-.center{text-align:center}.center .lead{margin-inline:auto}
-.cta{text-align:center;padding:110px 0}.cta .lead{margin:0 auto 30px}
-footer{padding:70px 0 40px}
-.cols{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:30px}
-footer h4{margin:0 0 14px;font-size:1rem}
-footer a{display:block;padding:6px 0;font-weight:500}
-footer p{font-weight:500;max-width:260px}
-.legal{border-top:2px solid var(--b);margin-top:44px;padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.9rem;font-weight:600}
-.js .rv{opacity:0;transform:translateY(12px);transition:opacity 500ms var(--ease),transform 500ms var(--ease)}
-.js .rv.in{opacity:1;transform:none}
-@media (hover:hover) and (pointer:fine){
-.links a:hover,.dd>button:hover{background:rgba(255,255,255,.14)}
-.dd:hover .menu{opacity:1;visibility:visible;transform:none;transition-delay:0s}
-.btn:hover{background:#0262cc}.btn.inv:hover{background:var(--w);transform:scale(1.03)}
-.more:hover{transform:translateX(4px)}}
-@media (prefers-reduced-transparency:reduce){header{background:var(--k);-webkit-backdrop-filter:none;backdrop-filter:none}}
-@media (prefers-reduced-motion:reduce){.js .rv{transform:none;transition:opacity 200ms ease}.bub,.menu{transform:none;transition:opacity 150ms ease}@starting-style{.bub{transform:none}}}
-@media (max-width:900px){
-.nav>.btn{display:none}.burger{display:block}
-.links{position:absolute;top:72px;left:0;right:0;flex-direction:column;margin:0;padding:12px 24px 22px;background:var(--k);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity 200ms var(--ease),transform 200ms var(--ease),visibility 0s 200ms}
-.links.open{opacity:1;visibility:visible;transform:none;transition-delay:0s}
-.menu{position:static;opacity:1;visibility:visible;transform:none;border:0;padding:0 0 0 12px;min-width:0}
-.hero .wrap,.feat .wrap{grid-template-columns:1fr;gap:40px}
-.feat.rev .txt{order:0}.hero .wrap{padding-top:44px;min-height:0}
-.stage{height:440px}.phone{transform:translateY(60px)}
-.stats{grid-template-columns:1fr 1fr}.how{grid-template-columns:1fr}.cols{grid-template-columns:1fr 1fr}
-.big,.feat,.cta{padding:72px 0}}
-@media (max-width:600px){
-.wrap{padding-inline:16px}
-.hero .wrap{gap:28px;padding-top:32px}
-.hero .lead{font-size:1.1rem}
-.stage{height:240px}
-.feat .wrap{gap:28px}
-.feat .txt p{font-size:1.05rem}
-.shots.one img.image3{width:min(230px,78vw)}
-.chips{gap:8px}.chips span{padding:6px 12px;font-size:.85rem}
-.cols{grid-template-columns:1fr}
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#000000">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+  <meta name="color-scheme" content="light">
+  <title>LanMesh | Private chat and calling without internet</title>
+  <meta name="description"
+    content="LanMesh is a peer to peer messenger for your local network. Chat, call and share files with people nearby, no internet and no servers.">
+  <script>document.documentElement.classList.add('js')</script>
+  <style>
+    :root {
+      --b: #0379fb;
+      --k: #000;
+      --w: #fff;
+      --ease: cubic-bezier(.23, 1, .32, 1);
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px)
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px))
+    }
+
+    body {
+      margin: 0;
+      background: var(--k);
+      color: var(--k);
+      font: 400 1rem/1.5 system-ui, -apple-system, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      letter-spacing: 0;
+      -webkit-font-smoothing: antialiased
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0 0 auto;
+      height: env(safe-area-inset-top, 0px);
+      z-index: 30;
+      background: var(--k)
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none
+    }
+
+    button,
+    a,
+    [role=button] {
+      touch-action: manipulation
+    }
+
+    button,
+    .btn,
+    .logo,
+    .links a {
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px
+    }
+
+    header {
+      position: sticky;
+      top: env(safe-area-inset-top, 0px);
+      z-index: 20;
+      background: rgba(0, 0, 0, .72);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
+      color: var(--w)
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      height: 72px
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -.02em
+    }
+
+    .logo i {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--b);
+      display: grid;
+      place-items: center
+    }
+
+    .logo svg {
+      width: 20px;
+      height: 20px
+    }
+
+    .links {
+      display: flex;
+      gap: 4px;
+      margin-left: 12px;
+      flex: 1
+    }
+
+    .links a,
+    .dd>button {
+      font: 600 .95rem system-ui, -apple-system, sans-serif;
+      letter-spacing: .01em;
+      color: var(--w);
+      background: none;
+      border: 0;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 120ms ease, transform 120ms var(--ease)
+    }
+
+    .links a:active,
+    .dd>button:active {
+      transform: scale(.97);
+      background: var(--b)
+    }
+
+    .dd {
+      position: relative
+    }
+
+    .menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 210px;
+      background: var(--k);
+      border: 2px solid var(--b);
+      border-radius: 16px;
+      padding: 8px;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(.97);
+      transform-origin: top left;
+      transition: opacity 150ms var(--ease), transform 150ms var(--ease), visibility 0s 150ms
+    }
+
+    .dd:focus-within .menu {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      transition-delay: 0s
+    }
+
+    .menu a {
+      display: block
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--b);
+      color: var(--w);
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 15px 30px;
+      border-radius: 999px;
+      border: 0;
+      transition: transform 160ms var(--ease), background-color 160ms ease
+    }
+
+    .btn:active {
+      transform: scale(.97)
+    }
+
+    .btn.sm {
+      padding: 10px 22px;
+      font-size: .95rem
+    }
+
+    .btn.inv {
+      background: var(--w);
+      color: var(--b)
+    }
+
+    .dl-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 16px;
+      max-width: 1040px;
+      margin: 36px auto 0;
+      text-align: left
+    }
+
+    .dl-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--w);
+      color: var(--k);
+      padding: 16px 18px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: transform 160ms var(--ease), box-shadow 160ms ease, background-color 160ms ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+      border: 2px solid transparent
+    }
+
+    .dl-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, .22);
+      background: #fff
+    }
+
+    .dl-card:active {
+      transform: scale(.98)
+    }
+
+    .dl-card.highlight {
+      border-color: var(--w);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .25), 0 0 0 2px rgba(255, 255, 255, .4)
+    }
+
+    .dl-card .badge {
+      position: absolute;
+      top: -10px;
+      right: 14px;
+      background: var(--k);
+      color: var(--w);
+      font-size: .68rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: .04em
+    }
+
+    .dl-card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(3, 121, 251, .1);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      color: var(--b);
+      transition: background-color 160ms ease, color 160ms ease
+    }
+
+    .dl-card:hover .dl-card-icon {
+      background: var(--b);
+      color: var(--w)
+    }
+
+    .dl-card-icon svg {
+      width: 22px;
+      height: 22px
+    }
+
+    .dl-card-body {
+      display: flex;
+      flex-direction: column
+    }
+
+    .dl-card-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -.01em;
+      line-height: 1.2;
+      color: var(--k)
+    }
+
+    .dl-card-sub {
+      font-size: .78rem;
+      font-weight: 600;
+      color: #555;
+      margin-top: 2px
+    }
+
+    .dl-notify {
+      display: none;
+      margin-top: 22px;
+      font-weight: 600;
+      font-size: .92rem;
+      background: rgba(0, 0, 0, .45);
+      color: #fff;
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      padding: 12px 24px;
+      border-radius: 999px;
+      opacity: 0;
+      transition: opacity 200ms ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
+      pointer-events: auto
+    }
+
+    .dl-notify.show {
+      opacity: 1
+    }
+
+    .dl-notify a {
+      color: #fff;
+      text-decoration: underline;
+      font-weight: 700;
+      margin-left: 6px;
+      cursor: pointer
+    }
+
+    .dl-notify a:hover {
+      opacity: .85
+    }
+
+    .burger {
+      display: none;
+      margin-left: auto;
+      background: none;
+      border: 0;
+      color: var(--w);
+      font-size: 1.7rem;
+      padding: 8px 12px;
+      transition: transform 120ms var(--ease)
+    }
+
+    .burger:active {
+      transform: scale(.94)
+    }
+
+    .blue {
+      background: var(--b);
+      color: var(--w)
+    }
+
+    .black {
+      background: var(--k);
+      color: var(--w)
+    }
+
+    .white {
+      background: var(--w);
+      color: var(--k)
+    }
+
+    h1 {
+      font-size: clamp(2.7rem, 6.2vw, 4.8rem);
+      line-height: 1.02;
+      letter-spacing: -.04em;
+      margin: 0 0 20px;
+      font-weight: 800
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4.4vw, 3.4rem);
+      line-height: 1.08;
+      letter-spacing: -.03em;
+      margin: 0 0 18px;
+      font-weight: 800
+    }
+
+    .white h2 em,
+    .white .more {
+      color: var(--b)
+    }
+
+    .black h2 em {
+      color: var(--b)
+    }
+
+    em {
+      font-style: normal
+    }
+
+    .blue em {
+      color: var(--k)
+    }
+
+    .lead {
+      font-size: clamp(1.2rem, 2vw, 1.4rem);
+      line-height: 1.45;
+      font-weight: 600;
+      max-width: 520px;
+      margin: 0 0 30px;
+      letter-spacing: 0
+    }
+
+    .fine {
+      font-size: .9rem;
+      font-weight: 600;
+      letter-spacing: .01em;
+      margin-top: 18px
+    }
+
+    .hero .wrap {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 40px;
+      align-items: center;
+      padding-top: 64px;
+      padding-bottom: 0;
+      min-height: min(100svh, 780px);
+      overflow: hidden
+    }
+
+    .hero {
+      overflow: hidden;
+      background-image: linear-gradient(rgba(3, 121, 251, 0.75), rgba(3, 121, 251, 0.75)), url("image_bg.png");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .stage {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      align-self: end;
+      height: 540px
+    }
+
+    .phone {
+      width: min(300px, 68vw);
+      filter: drop-shadow(0 30px 40px rgba(0, 0, 0, .35));
+      transform: translateY(40px)
+    }
+
+    .phone.b2 {
+      position: absolute;
+      left: 0;
+      bottom: -70px;
+      width: min(220px, 42vw);
+      transform: rotate(-6deg)
+    }
+
+    .bub {
+      position: absolute;
+      background: var(--w);
+      color: var(--k);
+      border-radius: 18px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: opacity 400ms var(--ease) 700ms, transform 400ms var(--ease) 700ms
+    }
+
+    .bub.one {
+      right: 0;
+      top: 18%
+    }
+
+    .bub.two {
+      left: -2%;
+      top: 36%;
+      background: var(--k);
+      color: var(--w);
+      transition-delay: 900ms
+    }
+
+    @starting-style {
+      .bub {
+        opacity: 0;
+        transform: scale(.95) translateY(8px)
+      }
+    }
+
+    .big {
+      padding: 110px 0;
+      text-align: center
+    }
+
+    .big p {
+      font-size: clamp(1.5rem, 3.4vw, 2.6rem);
+      line-height: 1.22;
+      letter-spacing: -.025em;
+      font-weight: 700;
+      max-width: 960px;
+      margin: 0 auto
+    }
+
+    .big p span {
+      color: var(--b)
+    }
+
+    .feat {
+      padding: 100px 0
+    }
+
+    .feat .wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: center
+    }
+
+    .feat.rev .txt {
+      order: 2
+    }
+
+    .feat .txt p {
+      font-size: 1.2rem;
+      font-weight: 500;
+      line-height: 1.5;
+      max-width: 480px;
+      margin: 0
+    }
+
+    .more {
+      display: inline-block;
+      margin-top: 18px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      transition: transform 120ms var(--ease)
+    }
+
+    .more:active {
+      transform: scale(.97)
+    }
+
+    .more::after {
+      content: " \2192"
+    }
+
+    .shots {
+      display: flex;
+      justify-content: center;
+      gap: 22px
+    }
+
+    .shots img {
+      display: block;
+      width: min(250px, 42vw);
+      max-width: 100%;
+      height: auto
+    }
+
+    .shots img:nth-child(2) {
+      margin-top: 60px
+    }
+
+    .shots.one img {
+      width: min(310px, 100%)
+    }
+
+    .shots.one img.image3 {
+      width: min(250px, 100%)
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px
+    }
+
+    .chips span {
+      border: 2px solid currentColor;
+      border-radius: 999px;
+      padding: 7px 16px;
+      font-weight: 700;
+      font-size: .95rem;
+      letter-spacing: .01em
+    }
+
+    .stats,
+    .how {
+      display: grid;
+      gap: 18px;
+      margin-top: 52px
+    }
+
+    .stats {
+      grid-template-columns: repeat(3, 1fr)
+    }
+
+    .how {
+      grid-template-columns: repeat(3, 1fr)
+    }
+
+    .stat,
+    .how>div {
+      border: 2px solid var(--b);
+      border-radius: 24px;
+      padding: 28px
+    }
+
+    .stat b {
+      display: block;
+      font-size: 3rem;
+      letter-spacing: -.04em;
+      color: var(--b);
+      line-height: 1
+    }
+
+    .stat span {
+      font-weight: 700
+    }
+
+    .how h3 {
+      margin: 0 0 8px;
+      font-size: 1.4rem;
+      letter-spacing: -.015em
+    }
+
+    .how p {
+      margin: 0;
+      font-weight: 500
+    }
+
+    .n {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--b);
+      color: var(--w);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      margin-bottom: 16px
+    }
+
+    .mesh {
+      display: block;
+      margin: 0 auto;
+      max-width: 620px;
+      width: 100%
+    }
+
+    .center {
+      text-align: center
+    }
+
+    .center .lead {
+      margin-inline: auto
+    }
+
+    .cta {
+      text-align: center;
+      padding: 110px 0
+    }
+
+    .cta .lead {
+      margin: 0 auto 30px
+    }
+
+    footer {
+      padding: 70px 0 40px
+    }
+
+    .cols {
+      display: grid;
+      grid-template-columns: 1.4fr repeat(4, 1fr);
+      gap: 30px
+    }
+
+    footer h4 {
+      margin: 0 0 14px;
+      font-size: 1rem
+    }
+
+    footer a {
+      display: block;
+      padding: 6px 0;
+      font-weight: 500
+    }
+
+    footer p {
+      font-weight: 500;
+      max-width: 260px
+    }
+
+    .legal {
+      border-top: 2px solid var(--b);
+      margin-top: 44px;
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: .9rem;
+      font-weight: 600
+    }
+
+    .js .rv {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 500ms var(--ease), transform 500ms var(--ease)
+    }
+
+    .js .rv.in {
+      opacity: 1;
+      transform: none
+    }
+
+    @media (hover:hover) and (pointer:fine) {
+
+      .links a:hover,
+      .dd>button:hover {
+        background: rgba(255, 255, 255, .14)
+      }
+
+      .dd:hover .menu {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        transition-delay: 0s
+      }
+
+      .btn:hover {
+        background: #0262cc
+      }
+
+      .btn.inv:hover {
+        background: var(--w);
+        transform: scale(1.03)
+      }
+
+      .more:hover {
+        transform: translateX(4px)
+      }
+    }
+
+    @media (prefers-reduced-transparency:reduce) {
+      header {
+        background: var(--k);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .js .rv {
+        transform: none;
+        transition: opacity 200ms ease
+      }
+
+      .bub,
+      .menu {
+        transform: none;
+        transition: opacity 150ms ease
+      }
+
+      @starting-style {
+        .bub {
+          transform: none
+        }
+      }
+    }
+
+    /* By default (desktop), hide mobile-only combined slides */
+    .mobile-only-slide {
+      display: none
+    }
+
+    .dl-notify:empty {
+      display: none !important
+    }
+
+    @media (max-width: 900px) {
+      :root {
+        padding: 0;
+        --hh: 60px;
+        --top: calc(var(--hh) + env(safe-area-inset-top, 0px));
+        --bot: calc(env(safe-area-inset-bottom, 0px) + 20px)
+      }
+
+      /* Snap scrolling */
+      html {
+        scroll-snap-type: y mandatory;
+        scroll-behavior: auto;
+        scroll-padding-top: 0;
+        overscroll-behavior-y: none;
+        scrollbar-width: none
+      }
+
+      html::-webkit-scrollbar {
+        display: none
+      }
+
+      body::before {
+        display: none
+      }
+
+      /* Header floats over the slides so every slide is exactly one screen */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding-top: env(safe-area-inset-top, 0px)
+      }
+
+      .nav {
+        height: var(--hh);
+        gap: 12px
+      }
+
+      .nav>.btn {
+        display: none
+      }
+
+      .burger {
+        display: block;
+        margin-left: auto;
+        font-size: 1.6rem;
+        line-height: 1;
+        padding: 8px 10px;
+        cursor: pointer
+      }
+
+      .links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        margin: 0;
+        padding: 16px 20px 24px;
+        background: rgba(10, 10, 12, .96);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        backdrop-filter: blur(24px) saturate(180%);
+        border-bottom: 1px solid rgba(255, 255, 255, .12);
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, .65);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: opacity 200ms var(--ease), transform 200ms var(--ease), visibility 0s 200ms;
+        max-height: calc(100dvh - var(--top) - 12px);
+        overflow-y: auto
+      }
+
+      .links.open {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        transition-delay: 0s
+      }
+
+      .links a,
+      .dd>button {
+        font-size: 1.05rem;
+        padding: 12px 14px;
+        border-radius: 12px;
+        width: 100%;
+        text-align: left
+      }
+
+      .menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        border: 0;
+        padding: 4px 0 10px 14px;
+        min-width: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px 8px
+      }
+
+      .menu a {
+        font-size: .92rem;
+        color: rgba(255, 255, 255, .8);
+        padding: 8px 10px;
+        border-radius: 8px
+      }
+
+      .desktop-only-section {
+        display: none !important
+      }
+
+      .mobile-only-slide {
+        display: flex !important
+      }
+
+      /* One slide = one full screen, content centred and evenly spread */
+      .slide-snap {
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        height: 100vh;
+        height: 100dvh;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+        padding: var(--top) 0 var(--bot) !important
+      }
+
+      .slide-snap .wrap {
+        flex: 1;
+        min-height: 0;
+        width: 100%;
+        max-width: 560px;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center;
+        gap: 0 !important;
+        padding: 0 20px
+      }
+
+      /* Hero */
+      .slide-snap.hero {
+        position: relative;
+        padding-bottom: calc(var(--bot) + 56px) !important
+      }
+
+      .hero .stage {
+        display: none
+      }
+
+      .hero h1 {
+        font-size: clamp(2.5rem, 12vw, 3.4rem);
+        line-height: 1.04;
+        margin: 0 0 16px
+      }
+
+      .hero .lead {
+        font-size: 1.1rem;
+        margin: 0 0 28px
+      }
+
+      .hero .btn {
+        width: 100%
+      }
+
+      .hero .fine {
+        text-align: center;
+        margin-top: 14px
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+        width: 26px;
+        height: 42px;
+        transform: translateX(-50%);
+        border: 2px solid rgba(255, 255, 255, .75);
+        border-radius: 14px;
+        background: radial-gradient(circle, #fff 3px, transparent 4px) 50% 8px / 100% 10px no-repeat;
+        animation: cue 1.6s ease-in-out infinite
+      }
+
+      @keyframes cue {
+        50% {
+          background-position: 50% 20px
+        }
+      }
+
+      /* Combo slides: cards share the height evenly */
+      .combo-cards {
+        flex: 1;
+        min-height: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: clamp(16px, 3vh, 26px);
+        padding: 12px 0
+      }
+
+      .combo-card {
+        flex: 0 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: clamp(18px, 2.8vh, 26px) 18px;
+        border-radius: 24px;
+        background: rgba(0, 0, 0, .14)
+      }
+
+      .combo-card.light {
+        background: #f3f7ff;
+        border: 2px solid rgba(3, 121, 251, .16)
+      }
+
+      .black .combo-card {
+        background: rgba(255, 255, 255, .05);
+        border: 2px solid rgba(3, 121, 251, .5)
+      }
+
+      .combo-card h2 {
+        font-size: clamp(1.4rem, 5.8vw, 1.8rem);
+        line-height: 1.12;
+        margin: 0 0 6px
+      }
+
+      .combo-card p {
+        font-size: .95rem;
+        line-height: 1.45;
+        font-weight: 500;
+        margin: 0
+      }
+
+      .combo-card.light p {
+        color: rgba(0, 0, 0, .72)
+      }
+
+      /* Full-screen translucent background images (slides 2 and 3) */
+      .slide-bg {
+        position: relative
+      }
+
+      .slide-bg::before {
+        /* start below the fixed header so the image is centred in the visible area */
+        content: "";
+        position: absolute;
+        inset: var(--top) 0 0 0;
+        z-index: 0;
+        pointer-events: none;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat
+      }
+
+      .slide-bg .wrap {
+        position: relative;
+        z-index: 1
+      }
+
+      .slide-bg::before {
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
+        mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%)
+      }
+
+      .slide-calling::before {
+        background-image: url("image1.png");
+        opacity: .2;
+        background-size: contain;
+        background-position: center 55%;
+        inset: var(--top) 0 var(--bot) 0
+      }
+
+      /* on blue: desaturate + lighten so it reads as a soft white texture, not a muddy blue photo */
+      .slide-messaging::before {
+        background-image: url("image3.png");
+        opacity: .16;
+        filter: grayscale(1) brightness(1.6) contrast(.9);
+        background-size: contain;
+        background-position: center 55%;
+        inset: var(--top) 0 var(--bot) 0;
+        /* feather all four edges so the image's rectangle never shows on the blue */
+        -webkit-mask-image: radial-gradient(ellipse 70% 62% at 50% 50%, #000 55%, transparent 100%);
+        mask-image: radial-gradient(ellipse 70% 62% at 50% 50%, #000 55%, transparent 100%)
+      }
+
+      /* glass cards that keep the slide's own colour */
+      .slide-bg .combo-card.light {
+        background: rgba(255, 255, 255, .78);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px)
+      }
+
+      .slide-messaging .combo-card {
+        background: rgba(3, 121, 251, .55);
+        border: 1.5px solid rgba(255, 255, 255, .35);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px)
+      }
+
+      /* Card with a screenshot: text left, image right, chips underneath */
+      .combo-card.ph {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 34%);
+        grid-template-areas: "h i" "p i" "c c";
+        column-gap: 16px;
+        align-content: center;
+        align-items: center
+      }
+
+      .ph h2 {
+        grid-area: h;
+        align-self: end
+      }
+
+      .ph p {
+        grid-area: p;
+        align-self: start
+      }
+
+      .ph .chips {
+        grid-area: c
+      }
+
+      .ph .shot {
+        grid-area: i;
+        display: flex;
+        justify-content: center;
+        align-items: center
+      }
+
+      .ph .shot img {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: clamp(120px, 19vh, 180px);
+        object-fit: contain;
+        border-radius: 14px;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, .18)
+      }
+
+      .combo-card .chips {
+        margin: 12px 0 0;
+        gap: 6px
+      }
+
+      .combo-card .chips span {
+        padding: 5px 11px;
+        font-size: .78rem;
+        border-width: 1.5px;
+        white-space: nowrap
+      }
+
+      /* Stats */
+      .combo-card .stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-top: 12px
+      }
+
+      .combo-card .stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 10px 4px;
+        border-radius: 16px;
+        border: 1.5px solid var(--b);
+        gap: 0;
+        background: rgba(3, 121, 251, .08)
+      }
+
+      .combo-card .stat b {
+        font-size: 1.7rem;
+        line-height: 1.1;
+        margin-bottom: 2px
+      }
+
+      .combo-card .stat span {
+        font-size: .74rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, .85)
+      }
+
+      /* Steps */
+      .how-compact {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px
+      }
+
+      .step-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px
+      }
+
+      .step-num {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        border-radius: 50%;
+        background: var(--b);
+        color: #fff;
+        font-size: .85rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center
+      }
+
+      .step-text h4 {
+        margin: 0 0 2px;
+        font-size: .98rem;
+        color: #fff
+      }
+
+      .step-text p {
+        font-size: .85rem;
+        line-height: 1.38;
+        color: rgba(255, 255, 255, .75)
+      }
+
+      /* Download slide */
+      .slide-snap.cta .wrap {
+        justify-content: center;
+        text-align: center
+      }
+
+      .cta h2 {
+        font-size: clamp(1.9rem, 8vw, 2.4rem)
+      }
+
+      .cta .lead {
+        font-size: 1.02rem;
+        margin: 0 auto
+      }
+
+      .dl-cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: clamp(20px, 3.5vh, 32px) auto 0;
+        max-width: 100%
+      }
+
+      .dl-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        padding: 20px 10px 16px;
+        border-radius: 20px
+      }
+
+      .dl-card-body {
+        align-items: center
+      }
+
+      .dl-card-title {
+        font-size: 1.05rem
+      }
+
+      .dl-card-sub {
+        font-size: .74rem
+      }
+
+      .cta .fine {
+        margin-top: 20px !important;
+        font-size: .82rem
+      }
+
+      .dl-notify {
+        position: fixed;
+        left: 16px;
+        right: 16px;
+        margin: 0;
+        z-index: 40;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+        border-radius: 16px;
+        padding: 12px 16px;
+        font-size: .82rem;
+        line-height: 1.4;
+        text-align: center
+      }
+
+      /* Footer: sits under the last slide, reachable by snapping to its end */
+      .slide-snap.footer-slide {
+        height: auto;
+        scroll-snap-align: end;
+        overflow: visible;
+        justify-content: flex-start;
+        padding: 36px 0 calc(24px + env(safe-area-inset-bottom, 0px)) !important
+      }
+
+      .footer-slide .wrap {
+        flex: none;
+        justify-content: flex-start;
+        max-width: 560px
+      }
+
+      .cols {
+        grid-template-columns: 1fr 1fr;
+        gap: 22px 16px
+      }
+
+      .cols>div:first-child {
+        grid-column: 1 / -1;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, .1)
+      }
+
+      .cols h4 {
+        font-size: .9rem;
+        margin-bottom: 6px;
+        color: var(--b)
+      }
+
+      .cols a {
+        padding: 5px 0;
+        font-size: .88rem
+      }
+
+      .legal {
+        margin-top: 22px;
+        padding-top: 14px;
+        font-size: .78rem
+      }
+    }
+
+    /* Short phones (e.g. iPhone SE) */
+    @media (max-width: 900px) and (max-height: 700px) {
+      .combo-card p {
+        font-size: .88rem;
+        line-height: 1.38
+      }
+
+      .combo-card {
+        padding: 12px 16px
+      }
+
+      .step-text p {
+        display: none
+      }
+
+      .ph .shot img {
+        max-height: 110px
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero::after {
+        animation: none
+      }
+    }
+  </style>
 </head>
+
 <body>
-<header><div class="wrap nav">
-<a class="logo" href="#top"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.4"/><circle cx="5" cy="18" r="2.4"/><circle cx="19" cy="18" r="2.4"/><path d="M11 7.2 6 16M13 7.2l5 8.8M7.4 18h9.2"/></svg></i>LanMesh</a>
-<nav class="links" id="links">
-<div class="dd"><button aria-haspopup="true">Features &#9662;</button><div class="menu"><a href="#calling">Calling</a><a href="#messaging">Messaging</a><a href="#groups">Groups</a><a href="#connect">Connect</a><a href="#mesh">Mesh</a><a href="#privacy">Security</a></div></div>
-<a href="#privacy">Privacy</a><a href="#how">How it works</a><a href="#download">Download</a>
-</nav>
-<a class="btn sm" href="#download">Download</a>
-<button class="burger" id="bg" aria-label="Menu" aria-expanded="false">&#9776;</button>
-</div></header>
+  <header>
+    <div class="wrap nav">
+      <a class="logo" href="#top"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="5" r="2.4" />
+            <circle cx="5" cy="18" r="2.4" />
+            <circle cx="19" cy="18" r="2.4" />
+            <path d="M11 7.2 6 16M13 7.2l5 8.8M7.4 18h9.2" />
+          </svg></i>LanMesh</a>
+      <nav class="links" id="links">
+        <div class="dd"><button aria-haspopup="true">Features &#9662;</button>
+          <div class="menu"><a href="#calling">Calling</a><a href="#messaging">Messaging</a><a
+              href="#groups">Groups</a><a href="#connect">Connect</a><a href="#mesh">Mesh</a><a
+              href="#privacy">Security</a></div>
+        </div>
+        <a href="#privacy">Privacy</a><a href="#how">How it works</a><a href="#download">Download</a>
+      </nav>
+      <a class="btn sm" href="#download">Download</a>
+      <button class="burger" id="bg" aria-label="Menu" aria-expanded="false">&#9776;</button>
+    </div>
+  </header>
 
-<main id="top">
-<section class="hero blue"><div class="wrap">
-<div class="rv"><h1>Message nearby.<br>No internet.</h1>
-<p class="lead">Simple, private chat and calling for the people on your WiFi or hotspot. No accounts, no servers, no data plan.</p>
-<a class="btn inv" href="#download">Download</a>
-<p class="fine">Works on the same local network. Free and open.</p></div>
-<div class="stage">
-<!-- <div class="bub one">1 peer connected</div><div class="bub two">Hii, can you hear me?</div> -->
-</div></div></section>
+  <main id="top">
+    <!-- Slide 1: Hero (Shared on Desktop & Mobile) -->
+    <section class="hero blue slide-snap">
+      <div class="wrap">
+        <div class="rv">
+          <h1>Message nearby.<br>No internet.</h1>
+          <p class="lead">Simple, private chat and calling for the people on your WiFi or hotspot. No accounts, no
+            servers, no data plan.</p>
+          <a class="btn inv" href="#download">Download</a>
+          <p class="fine">Works on the same local network. Free and open.</p>
+        </div>
+        <div class="stage">
+          <!-- <div class="bub one">1 peer connected</div><div class="bub two">Hii, can you hear me?</div> -->
+        </div>
+      </div>
+    </section>
 
-<section class="big black"><div class="wrap rv"><p>With LanMesh you can chat, call and share with everyone around you. <span>Classrooms, hostels, hackathons, campsites and blackouts included.</span></p></div></section>
+    <!-- DESKTOP SECTIONS (Preserved intact for landscape/desktop) -->
+    <section class="big black desktop-only-section">
+      <div class="wrap rv">
+        <p>With LanMesh you can chat, call and share with everyone around you. <span>Classrooms, hostels, hackathons,
+            campsites and blackouts included.</span></p>
+      </div>
+    </section>
 
-<section class="feat white" id="calling"><div class="wrap">
-<div class="txt rv"><h2>Never miss a moment with voice and video calls</h2>
-<p>From a quick one to one call to a group room of up to six people, talk face to face over your local network. Media flows directly between devices.</p>
-<a class="more" href="#how">Learn more</a></div>
-<div class="shots one rv"><img src="image1.png"></div>
-</div></section>
+    <section class="feat white desktop-only-section" id="calling">
+      <div class="wrap">
+        <div class="txt rv">
+          <h2>Never miss a moment with voice and video calls</h2>
+          <p>From a quick one to one call to a group room of up to six people, talk face to face over your local
+            network. Media flows directly between devices.</p>
+          <a class="more" href="#how">Learn more</a>
+        </div>
+        <div class="shots one rv"><img src="image1.png"></div>
+      </div>
+    </section>
 
-<section class="feat black rev" id="privacy"><div class="wrap">
-<div class="txt rv"><h2>Stay on <em>your</em> network</h2>
-<p>There is no cloud in the middle. Every connection between devices is secured with TLS 1.3 and each device gets its own cryptographic identity. Your messages never leave your local network.</p>
-<div class="chips"><span>TLS 1.3 transport</span><span>No central server</span><span>Local history only</span></div>
-<p class="fine">Note: messages relayed across hops are not end to end encrypted yet.</p></div>
-<div class="rv"><svg class="mesh" viewBox="0 0 520 340" fill="none" aria-label="Local mesh diagram">
-<g stroke="#0379fb" stroke-width="3" stroke-linecap="round"><path d="M260 170 110 70M260 170 410 70M260 170 110 270M260 170 410 270M110 70 110 270M410 70 410 270"/></g>
-<g fill="#000" stroke="#0379fb" stroke-width="4"><circle cx="110" cy="70" r="34"/><circle cx="410" cy="70" r="34"/><circle cx="110" cy="270" r="34"/><circle cx="410" cy="270" r="34"/></g>
-<circle cx="260" cy="170" r="48" fill="#0379fb"/>
-<g font-family="system-ui,sans-serif" font-weight="700" font-size="15" fill="#fff" text-anchor="middle"><text x="260" y="176" font-size="17">You</text><text x="110" y="76">Spade</text><text x="410" y="76">Asha</text><text x="110" y="276">Ravi</text><text x="410" y="276">Mira</text></g></svg></div>
-</div></section>
+    <section class="feat black rev desktop-only-section" id="privacy">
+      <div class="wrap">
+        <div class="txt rv">
+          <h2>Stay on <em>your</em> network</h2>
+          <p>There is no cloud in the middle. Every connection between devices is secured with TLS 1.3 and each device
+            gets its own cryptographic identity. Your messages never leave your local network.</p>
+          <div class="chips"><span>TLS 1.3 transport</span><span>No central server</span><span>Local history only</span>
+          </div>
+          <p class="fine">Note: messages relayed across hops are not end to end encrypted yet.</p>
+        </div>
+        <div class="rv"><svg class="mesh" viewBox="0 0 520 340" fill="none" aria-label="Local mesh diagram">
+            <g stroke="#0379fb" stroke-width="3" stroke-linecap="round">
+              <path d="M260 170 110 70M260 170 410 70M260 170 110 270M260 170 410 270M110 70 110 270M410 70 410 270" />
+            </g>
+            <g fill="#000" stroke="#0379fb" stroke-width="4">
+              <circle cx="110" cy="70" r="34" />
+              <circle cx="410" cy="70" r="34" />
+              <circle cx="110" cy="270" r="34" />
+              <circle cx="410" cy="270" r="34" />
+            </g>
+            <circle cx="260" cy="170" r="48" fill="#0379fb" />
+            <g font-family="system-ui,sans-serif" font-weight="700" font-size="15" fill="#fff" text-anchor="middle">
+              <text x="260" y="176" font-size="17">You</text><text x="110" y="76">Spade</text><text x="410"
+                y="76">Asha</text><text x="110" y="276">Ravi</text><text x="410" y="276">Mira</text>
+            </g>
+          </svg></div>
+      </div>
+    </section>
 
-<section class="feat white" id="groups"><div class="wrap">
-<div class="shots" rv><img src="image2.png"></div>
-<div class="txt rv"><h2>Keep in touch with your groups</h2>
-<p>Spin up a channel in seconds, like general, dev or wwe. Each group is isolated, so messages and calls stay with the people who joined it.</p>
-<a class="more" href="#messaging">Learn more</a></div>
-</div></section>
+    <section class="feat white desktop-only-section" id="groups">
+      <div class="wrap">
+        <div class="shots rv"><img src="image2.png"></div>
+        <div class="txt rv">
+          <h2>Keep in touch with your groups</h2>
+          <p>Spin up a channel in seconds, like general, dev or wwe. Each group is isolated, so messages and calls stay
+            with the people who joined it.</p>
+          <a class="more" href="#messaging">Learn more</a>
+        </div>
+      </div>
+    </section>
 
-<section class="feat blue" id="messaging"><div class="wrap">
-<div class="txt rv"><h2>Say what you <em>feel</em></h2>
-<p>Record a voice message for a quick hello, drop in photos, or send any file up to 8 MB. React with an emoji, edit what you wrote, or delete it.</p>
-<div class="chips"><span>Voice notes</span><span>Photos</span><span>Files up to 8 MB</span><span>Reactions</span><span>Edit and delete</span></div></div>
-<div class="shots one rv"><img class="image3" src="image3.png"></div>
-</div></section>
+    <section class="feat blue desktop-only-section" id="messaging">
+      <div class="wrap">
+        <div class="txt rv">
+          <h2>Say what you <em>feel</em></h2>
+          <p>Record a voice message for a quick hello, drop in photos, or send any file up to 8 MB. React with an emoji,
+            edit what you wrote, or delete it.</p>
+          <div class="chips"><span>Voice notes</span><span>Photos</span><span>Files up to 8
+              MB</span><span>Reactions</span><span>Edit and delete</span></div>
+        </div>
+        <div class="shots one rv"><img class="image3" src="image3.png"></div>
+      </div>
+    </section>
 
-<section class="feat white rev" id="connect"><div class="wrap">
-<div class="txt rv"><h2>Connect <em>your</em> way</h2>
-<p>Peers on the same WiFi show up automatically. If your router blocks discovery, scan a QR code or paste a peer address and you are in.</p>
-<div class="chips"><span>Auto discovery</span><span>Show my QR code</span><span>Scan to connect</span><span>Manual address</span></div></div>
-<div class="shots" rv><img src="image2.png"></div>
-</div></section>
+    <section class="feat white rev desktop-only-section" id="connect">
+      <div class="wrap">
+        <div class="txt rv">
+          <h2>Connect <em>your</em> way</h2>
+          <p>Peers on the same WiFi show up automatically. If your router blocks discovery, scan a QR code or paste a
+            peer address and you are in.</p>
+          <div class="chips"><span>Auto discovery</span><span>Show my QR code</span><span>Scan to
+              connect</span><span>Manual address</span></div>
+        </div>
+        <div class="shots rv"><img src="image2.png"></div>
+      </div>
+    </section>
 
-<section class="feat black" id="mesh"><div class="wrap" style="display:block">
-<div class="center rv"><h2>Reach farther with <em>multi hop</em></h2>
-<p class="lead">Messages hop from device to device, so people out of direct range still get the conversation. Loops are suppressed automatically.</p></div>
-<div class="stats">
-<div class="stat rv"><b>6</b><span>hops per message</span></div>
-<div class="stat rv"><b>6</b><span>people per call room</span></div>
-<div class="stat rv"><b>8 MB</b><span>per shared file</span></div>
-<div class="stat rv"><b>0</b><span>servers needed</span></div></div>
-</div></section>
+    <section class="feat black desktop-only-section" id="mesh">
+      <div class="wrap" style="display:block">
+        <div class="center rv">
+          <h2>Reach farther with <em>multi hop</em></h2>
+          <p class="lead">Messages hop from device to device, so people out of direct range still get the conversation.
+            Loops are suppressed automatically.</p>
+        </div>
+        <div class="stats">
+          <div class="stat rv"><b>6</b><span>people per call room</span></div>
+          <div class="stat rv"><b>8 MB</b><span>per shared file</span></div>
+          <div class="stat rv"><b>0</b><span>servers needed</span></div>
+        </div>
+      </div>
+    </section>
 
-<section class="feat white" id="how"><div class="wrap" style="display:block">
-<div class="center rv"><h2>Up and running in three steps</h2></div>
-<div class="how">
-<div class="rv"><span class="n">1</span><h3>Join the same network</h3><p>Use the same WiFi or switch on a phone hotspot. No internet needed.</p></div>
-<div class="rv"><span class="n">2</span><h3>Open LanMesh</h3><p>Pick a nickname. Nearby devices appear on their own, or connect with a QR code.</p></div>
-<div class="rv"><span class="n">3</span><h3>Start talking</h3><p>Chat in a group, send a voice note, or tap the camera to start a call.</p></div>
-</div></div></section>
+    <section class="feat white desktop-only-section" id="how">
+      <div class="wrap" style="display:block">
+        <div class="center rv">
+          <h2>Up and running in three steps</h2>
+        </div>
+        <div class="how">
+          <div class="rv"><span class="n">1</span>
+            <h3>Join the same network</h3>
+            <p>Use the same WiFi or switch on a phone hotspot. No internet needed.</p>
+          </div>
+          <div class="rv"><span class="n">2</span>
+            <h3>Open LanMesh</h3>
+            <p>Pick a nickname. Nearby devices appear on their own, or connect with a QR code.</p>
+          </div>
+          <div class="rv"><span class="n">3</span>
+            <h3>Start talking</h3>
+            <p>Chat in a group, send a voice note, or tap the camera to start a call.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section class="cta blue" id="download"><div class="wrap rv"><h2>Get LanMesh</h2>
-<p class="lead">Grab the app and talk to the people next to you, even when the internet is gone.</p>
-<a class="btn inv" href="#">Download for Android</a></div></section>
-</main>
+    <!-- MOBILE-ONLY COMBINED SLIDES (Full, rich, no empty space) -->
 
-<footer class="black"><div class="wrap">
-<div class="cols">
-<div><a class="logo" href="#top">LanMesh</a><p>Private messaging and calling for the people around you.</p></div>
-<div><h4>What we do</h4><a href="#calling">Calling</a><a href="#messaging">Messaging</a><a href="#groups">Groups</a><a href="#mesh">Mesh</a></div>
-<div><h4>Who we are</h4><a href="#how">How it works</a><a href="#privacy">Privacy</a><a href="#privacy">Security</a></div>
-<div><h4>Use LanMesh</h4><a href="#download">Android</a><a href="#connect">QR connect</a><a href="#connect">Manual connect</a></div>
-<div><h4>Need help?</h4><a href="#how">Getting started</a><a href="#privacy">Known limits</a></div>
-</div>
-<div class="legal"><span>2026 LanMesh.</span><span>English</span></div>
-</div></footer>
-<script>
-var L=document.getElementById('links'),B=document.getElementById('bg');
-B.addEventListener('click',function(){var o=L.classList.toggle('open');B.setAttribute('aria-expanded',o)});
-L.addEventListener('click',function(e){if(e.target.tagName==='A'){L.classList.remove('open');B.setAttribute('aria-expanded',false)}});
-var rv=document.querySelectorAll('.rv');
-try{var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:.12});
-rv.forEach(function(n,i){n.style.transitionDelay=(i%3)*60+'ms';io.observe(n)})}catch(e){rv.forEach(function(n){n.classList.add('in')})}
-</script>
+    <!-- Mobile Slide 2: Calling & Groups -->
+    <section class="feat white slide-snap mobile-only-slide slide-bg slide-calling">
+      <div class="wrap">
+        <div class="combo-cards">
+          <div class="combo-card light rv">
+            <h2>Voice &amp; Video Calls</h2>
+            <p>1-to-1 or group rooms up to 6 people. Media streams directly peer-to-peer over your local WiFi.</p>
+          </div>
+          <div class="combo-card light rv">
+            <h2>Channels &amp; Groups</h2>
+            <p>Spin up rooms in seconds. Each room is isolated, so conversations stay with whoever joined.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mobile Slide 3: Messaging & Connect -->
+    <section class="feat blue slide-snap mobile-only-slide slide-bg slide-messaging">
+      <div class="wrap">
+        <div class="combo-cards">
+          <div class="combo-card rv">
+            <h2>Say what you <em>feel</em></h2>
+            <p>Voice notes, photos, and files up to 8 MB. React, edit or delete.</p>
+            <div class="chips"><span>Voice notes</span><span>Photos</span><span>8 MB files</span><span>Reactions</span>
+            </div>
+          </div>
+          <div class="combo-card rv">
+            <h2>Connect <em>your</em> way</h2>
+            <p>Peers on WiFi appear automatically. Or scan a QR code or paste an address.</p>
+            <div class="chips"><span>Auto discovery</span><span>QR code</span><span>Manual address</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mobile Slide 4: Security & How it works -->
+    <section class="feat black slide-snap mobile-only-slide">
+      <div class="wrap">
+        <div class="combo-cards">
+          <div class="combo-card rv">
+            <h2>Stay on <em>your</em> network</h2>
+            <p>Secured with TLS 1.3. Messages hop device to device, so people out of range still get the conversation.
+            </p>
+            <div class="stats">
+              <div class="stat"><b>6</b><span>per call room</span></div>
+              <div class="stat"><b>8 MB</b><span>per file</span></div>
+              <div class="stat"><b>0</b><span>servers</span></div>
+            </div>
+          </div>
+          <div class="combo-card rv">
+            <h2>Up and running in 3 steps</h2>
+            <div class="how-compact">
+              <div class="step-row"><span class="step-num">1</span>
+                <div class="step-text">
+                  <h4>Join the same network</h4>
+                  <p>Same WiFi or phone hotspot. No internet needed.</p>
+                </div>
+              </div>
+              <div class="step-row"><span class="step-num">2</span>
+                <div class="step-text">
+                  <h4>Open LanMesh</h4>
+                  <p>Pick a nickname. Nearby devices appear on their own.</p>
+                </div>
+              </div>
+              <div class="step-row"><span class="step-num">3</span>
+                <div class="step-text">
+                  <h4>Start talking</h4>
+                  <p>Chat in a group, send a voice note, or start a call.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 5: Download (Shared on Desktop & Mobile) -->
+    <section class="cta blue slide-snap" id="download">
+      <div class="wrap rv">
+        <h2>Get LanMesh</h2>
+        <p class="lead">Grab the app and talk to the people next to you, even when the internet is gone.</p>
+
+        <div class="dl-cards">
+          <!-- Android -->
+          <a class="dl-card" href="https://github.com/yashogale30/LanMeshWebsite/releases/latest/download/lanmesh.apk"
+            download="lanmesh.apk" data-os="android" data-platform="android">
+            <div class="dl-card-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M16.6 5.82l1.62-2.81a.57.57 0 0 0-.21-.78.58.58 0 0 0-.78.21L15.58 5.3a11.16 11.16 0 0 0-7.16 0L6.77 2.44a.58.58 0 0 0-.78-.21.57.57 0 0 0-.21.78l1.62 2.81C4.08 7.35 1.8 11.02 1.5 15.35h21c-.3-4.33-2.58-8-5.9-9.53zM7.5 11.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm9 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z" />
+              </svg>
+            </div>
+            <div class="dl-card-body">
+              <span class="dl-card-title">Android</span>
+              <span class="dl-card-sub">Direct APK (.apk)</span>
+            </div>
+          </a>
+
+          <!-- Mac / macOS -->
+          <a class="dl-card"
+            href="https://github.com/yashogale30/LanMeshWebsite/releases/latest/download/lanmesh-darwin-arm64"
+            download="lanmesh-darwin-arm64" data-os="mac" data-platform="mac">
+            <div class="dl-card-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 1.01-2.87-.96.04-2.13.64-2.79 1.41-.57.66-.99 1.72-.94 2.76 1.07.08 2.09-.55 2.72-1.3z" />
+              </svg>
+            </div>
+            <div class="dl-card-body">
+              <span class="dl-card-title">Mac</span>
+              <span class="dl-card-sub">Apple Silicon(.dmg)</span>
+            </div>
+          </a>
+
+          <!-- Linux -->
+          <a class="dl-card"
+            href="https://github.com/yashogale30/LanMeshWebsite/releases/latest/download/lanmesh-linux-amd64"
+            download="lanmesh-linux-amd64" data-os="linux" data-platform="linux">
+            <div class="dl-card-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12.002 2c-3.13 0-4.8 2.25-4.8 4.63 0 1.22.42 2.65.88 3.65-.63.95-1.58 2.22-1.58 3.72 0 1.48.82 2.91 2.05 3.58-.28.84-.42 1.63-.42 2.2 0 1.25.96 2.22 2.76 2.22.61 0 1.34-.11 2.11-.31.77.2 1.5.31 2.11.31 1.8 0 2.76-.97 2.76-2.22 0-.57-.14-1.36-.42-2.2 1.23-.67 2.05-2.1 2.05-3.58 0-1.5-.95-2.77-1.58-3.72.46-1 .88-2.43.88-3.65 0-2.38-1.67-4.63-4.8-4.63zm-1.8 4.6c.44 0 .8.36.8.8s-.36.8-.8.8-.8-.36-.8-.8.36-.8.8-.8zm3.6 0c.44 0 .8.36.8.8s-.36.8-.8.8-.8-.36-.8-.8.36-.8.8-.8zm-1.8 2.3c.7 0 1.4.3 1.4.7 0 .5-.6 1-1.4 1s-1.4-.5-1.4-1c0-.4.7-.7 1.4-.7z" />
+              </svg>
+            </div>
+            <div class="dl-card-body">
+              <span class="dl-card-title">Linux</span>
+              <span class="dl-card-sub">AppImage(amd64)</span>
+            </div>
+          </a>
+
+          <!-- Windows -->
+          <a class="dl-card" href="https://github.com/yashogale30/LanMeshWebsite/releases/latest/download/lanmesh.exe"
+            download="lanmesh.exe" data-os="windows" data-platform="windows">
+            <div class="dl-card-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801" />
+              </svg>
+            </div>
+            <div class="dl-card-body">
+              <span class="dl-card-title">Windows</span>
+              <span class="dl-card-sub">Installer (.exe)</span>
+            </div>
+          </a>
+        </div>
+
+        <div><span id="dl-toast" class="dl-notify" role="status" aria-live="polite"></span></div>
+        <p class="fine" style="margin-top:28px">Works on the same local network. Free, open, and no servers.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="black slide-snap footer-slide">
+    <div class="wrap">
+      <div class="cols">
+        <div><a class="logo" href="#top">LanMesh</a>
+          <p>Private messaging and calling for the people around you.</p>
+        </div>
+        <div>
+          <h4>What we do</h4><a href="#calling">Calling</a><a href="#messaging">Messaging</a><a
+            href="#groups">Groups</a><a href="#mesh">Mesh</a>
+        </div>
+        <div>
+          <h4>Who we are</h4><a href="#how">How it works</a><a href="#privacy">Privacy</a><a
+            href="#privacy">Security</a>
+        </div>
+        <div>
+          <h4>Platforms</h4><a href="#download">Android</a><a href="#download">Mac</a><a href="#download">Linux</a><a
+            href="#download">Windows</a>
+        </div>
+        <div>
+          <h4>Need help?</h4><a href="#how">Getting started</a><a href="#privacy">Known limits</a>
+        </div>
+      </div>
+      <div class="legal"><span>2026 LanMesh.</span><span>English</span></div>
+    </div>
+  </footer>
+  <script>
+    var L = document.getElementById('links'), B = document.getElementById('bg');
+    B.addEventListener('click', function () {
+      var o = L.classList.toggle('open');
+      B.setAttribute('aria-expanded', o);
+      B.innerHTML = o ? '&#10005;' : '&#9776;';
+    });
+    L.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        L.classList.remove('open');
+        B.setAttribute('aria-expanded', false);
+        B.innerHTML = '&#9776;';
+      }
+    });
+    var rv = document.querySelectorAll('.rv');
+    try {
+      var io = new IntersectionObserver(function (e) { e.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target) } }) }, { threshold: .12 });
+      rv.forEach(function (n, i) { n.style.transitionDelay = (i % 3) * 60 + 'ms'; io.observe(n) })
+    } catch (e) { rv.forEach(function (n) { n.classList.add('in') }) }
+
+    // Detect OS, highlight matching card, and trigger automated download from GitHub Releases
+    (function () {
+      // --- Configuration ---
+      var GITHUB_REPO = 'yashogale30/LanMeshWebsite'; // Change this to your repository when ready
+      var GITHUB_RELEASE_BASE = 'https://github.com/' + GITHUB_REPO + '/releases/latest/download/';
+
+      var DOWNLOAD_CONFIG = {
+        android: {
+          name: 'Android',
+          file: 'lanmesh.apk',
+          url: GITHUB_RELEASE_BASE + 'lanmesh.apk'
+        },
+        mac: {
+          name: 'Mac',
+          file: 'lanmesh-darwin-arm64',
+          url: GITHUB_RELEASE_BASE + 'lanmesh-darwin-arm64'
+        },
+        linux: {
+          name: 'Linux',
+          file: 'lanmesh-linux-amd64',
+          url: GITHUB_RELEASE_BASE + 'lanmesh-linux-amd64'
+        },
+        windows: {
+          name: 'Windows',
+          file: 'lanmesh.exe',
+          url: GITHUB_RELEASE_BASE + 'lanmesh.exe'
+        }
+      };
+
+      // Programmatic download trigger
+      function executeDownload(item) {
+        // Create an invisible anchor tag to automatically start download
+        var link = document.createElement('a');
+        link.href = item.url;
+        link.download = item.file;
+        link.rel = 'noopener noreferrer';
+        link.target = '_blank';
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(function () {
+          document.body.removeChild(link);
+        }, 1000);
+
+        // Live feedback toast
+        var toast = document.getElementById('dl-toast');
+        if (toast) {
+          toast.innerHTML = '✓ Download initiated for <strong>' + item.name + '</strong> (' + item.file + ').' +
+            '<span style="display:inline-block;margin-left:8px;opacity:0.9">Didn\'t start? ' +
+            '<a href="' + item.url + '" target="_blank" rel="noopener">Click here to retry</a></span>';
+          toast.style.display = 'inline-block';
+          toast.classList.add('show');
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(function () {
+            toast.classList.remove('show');
+            setTimeout(function () { toast.style.display = 'none'; }, 200);
+          }, 7000);
+        }
+      }
+
+      // OS Detection
+      var ua = navigator.userAgent || '';
+      var os = 'other';
+      if (/Android/i.test(ua)) os = 'android';
+      else if (/iPhone|iPad|iPod/i.test(ua)) os = 'ios';
+      else if (/Macintosh|Mac OS X/i.test(ua)) os = 'mac';
+      else if (/Linux/i.test(ua)) os = 'linux';
+      else if (/Windows/i.test(ua)) os = 'windows';
+
+      var cards = document.querySelectorAll('.dl-card');
+      var toastTimer;
+
+      cards.forEach(function (card) {
+        var platformKey = card.getAttribute('data-platform') || card.getAttribute('data-os');
+
+        // Highlight user's current device
+        if (card.getAttribute('data-os') === os) {
+          card.classList.add('highlight');
+          var badge = document.createElement('span');
+          badge.className = 'badge';
+          badge.textContent = 'Your Device';
+          card.appendChild(badge);
+        }
+
+        // Intercept click to trigger automatic download via JS (Option 4)
+        card.addEventListener('click', function (e) {
+          e.preventDefault();
+          var configItem = DOWNLOAD_CONFIG[platformKey];
+          if (configItem) {
+            executeDownload(configItem);
+          }
+        });
+      });
+    })();
+  </script>
 </body>
+
 </html>
